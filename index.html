@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Коин Кликер</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #coin {
+            width: 40%;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        #coin.dimmed {
+            opacity: 0.5;
+        }
+        #counter {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        #changeBtn {
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .shop {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .shop-item {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="counter">Счетчик кликов: <span id="clickCount">0</span></div>
+<img id="coin" src="coin.png" alt="Коин" onclick="coinClick()">
+<button id="changeBtn" onclick="showOptions()">Изменить коин</button>
+
+<div id="options" class="hidden">
+    <h3>Выберите коин:</h3>
+    <div class="shop-item" onclick="changeCoin('coin1.png')">Коин 1</div>
+    <div class="shop-item" onclick="changeCoin('coin2.png')">Коин 2</div>
+    <div class="shop-item" onclick="changeCoin('coin3.png')">Коин 3</div>
+    <div class="shop-item" onclick="changeCoin('coin4.png')">Коин 4</div>
+    <button onclick="hideOptions()">Назад &lt;-</button>
+</div>
+
+<div class="shop" onclick="openShop()">Магазин</div>
+
+<div id="shopItems" class="hidden">
+    <h3>Магазин:</h3>
+    <button onclick="buyClickBoost()">Купить +1 клик (10 монет)</button>
+    <button onclick="hideShop()">Назад &lt;-</button>
+</div>
+
+<script>
+    let clickCount = 0;
+    let coins = 0; // Количество монет
+    let clickBoost = 1; // Буст клика
+
+    function coinClick() {
+        clickCount += clickBoost; // Увеличиваем счетчик с учетом буста
+        coins++; // Увеличиваем количество монет за клик
+        document.getElementById('clickCount').innerText = clickCount;
+        const coin = document.getElementById('coin');
+        coin.classList.add('dimmed');
+        setTimeout(() => coin.classList.remove('dimmed'), 300);
+    }
+
+    function showOptions() {
+        document.getElementById('options').classList.remove('hidden');
+    }
+
+    function hideOptions() {
+        document.getElementById('options').classList.add('hidden');
+    }
+
+    function changeCoin(coinImage) {
+        document.getElementById('coin').src = coinImage;
+        hideOptions();
+    }
+
+    function openShop() {
+        document.getElementById('shopItems').classList.remove('hidden');
+    }
+
+    function hideShop() {
+        document.getElementById('shopItems').classList.add('hidden');
+    }
+
+    function buyClickBoost() {
+        if (coins >= 10) { // Проверяем достаточно ли монет
+            coins -= 10; // Снимаем 10 монет
+            clickBoost++; // Увеличиваем буст клика
+            alert(Вы купили +1 клик! Теперь у вас ${coins} монет.);
+        } else {
+            alert("Недостаточно монет!");
+        }
+    }
+</script>
+
+</body>
+</html>
+
